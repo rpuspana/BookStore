@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html>
+
+    <head>
+        <meta charset="utf-8">
+        <link type="text/css" rel="stylesheet" href="css/styles.css">
+        <link href="https://fonts.googleapis.com/css?family=Roboto:400,700" rel="stylesheet">
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    </head>
+
+    <body>
+        <header>
+            <div>
+                <a href="index.html">Home</a>
+                <a href="add_book.html">Add book</a>
+                <a href="add_store.html">Add Store</a>
+            </div>
+        </header>
+        <div class="container">
+            <h2>Add a Book</h2>
+            <form id="books_form">
+
+                <div class="form-element">
+                    <label>Book name:</label>
+                    <input type="text" name="name" id="name">
+                </div>
+
+                <div class="form-element">
+                    <label>Book author:</label>
+                    <input type="text" name="author" id="author">
+                </div>
+
+                <div class="form-element">
+                    <label>Number of pages:</label>
+                    <input type="text" name="pages" id="pages">
+                </div>
+
+                <div class="form-element">
+                    <label>Price:</label>
+                    <input type="text" name="price" id="price">
+                </div>
+
+                <div class="form-element">
+                    <label>Stores:</label>
+                    <select name="stores" id="stores" multiple>
+                    </select>
+                </div>
+
+                <div class="form-element">
+                    <button type="submit">Save</button>
+                    <button type="button" class="deleteBookButton" id="delete_book">Delete</button>
+                </div>
+
+            </form>
+        </div>
+    </body>
+
+    <script>
+
+        // display all the stores in the Stores dropdown
+        $.ajax({
+            type: "GET",
+            url: "http://localhost:3000/api/stores",
+
+            // data = array of objects
+            success: (data, status, xhr) => {
+                
+                data.map((item) => {
+
+                    // create tags like this <option value="storeName">Volvo</option>
+                    $('#stores').append($('<option>', {
+                        // settings for each option on each iteratione
+
+                        // item.name = store name
+                        value: item.name,
+                        text: item.name
+                    }))
+                })
+            },
+            error: (xhr) => {
+                const err = JSON.parse(xhr.responseText);
+                alert('Error - ' + err.message);
+            }
+        });
+
+        // get the params from the URL, ?id=r232322
+        let serchParams = new URLSearchParams(window.location.search);
+
+        // ge the book_id from the params passed in the URL
+        // localhost:3000/book_edit.html?book_id=5b127e47877295a0bd0ee369
+        let bookID = serchParams.get("book_id");
+
+        // get the data of this book
+        $.ajax({
+            type: "GET",
+            url: `http://localhost:3000/api/books/${bookID}`,
+            success: (data, status, xhr) => {
+
+                // fill in the form with the data of the returned book
+                $('#name').val(data.name);
+                $('#author').val(data.author);
+                $('#pages').val(data.pages);
+                $('#price').val(data.price);
+                $('#stores').val(data.stores);
+            },
+            error: (xhr) => {
+                const err = JSON.parse(xhr.responseText);
+                alert('Error - ' + err.message);
+            }
+        })
+
+        // catch the form's submit event
+        $('#books_form').submit((event) => {
+            // prevent the page from reloading
+            event.preventDefault();
+
+            // get form values
+            let bookObj = {
+                name: $('#name').val(),
+                author: $('#author').val(),
+                pages: $('#pages').val(),
+                price: $('#price').val(),
+                stores: $('#stores').val()
+            }
+
+            $.ajax({
+                type: "PATCH",
+                url: `http://localhost:3000/api/add/books/${bookID}`,
+                data: JSON.stringify(bookObj),
+                contentType: "application/json",
+                success: (data, status, xhr) => {
+                    console.log(data);
+                    alert(`Book "${bookObj.name}" updated successfully`);
+                },
+                error: (xhr) => {
+                    const err = JSON.parse(xhr.responseText);
+                    alert('Error - ' + err.message);
+                }
+            })
+        })
+
+        $('#delete_book').click((e) => {
+
+            // get form values
+            const bookName = $('#name').val();
+
+            $.ajax({
+                type: "DELETE",
+                url: `http://localhost:3000/api/delete/books/${bookID}`,
+                success: (data, status, xhr) => {
+
+                    alert(`Book ${bookName} was deleted successfully`);
+
+                    // redirect to home page
+                    window.location.href = "/";
+                },
+                error: (xhr) => {
+                    const err = JSON.parse(xhr.responseText);
+                    alert('Error - ' + err.message);
+                }
+            })
+        })
+        
+    </script>
+
+</html>
