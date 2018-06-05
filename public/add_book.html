@@ -60,7 +60,10 @@
         // display all the stores in the Stores dropdown
         $.ajax({
             type: "GET",
-            url: "http://localhost:3000/api/stores",
+
+            // because we run the API and the frontend in the same location, we can get replace http://localhost:3000/api/books?ord=desc 
+            // with /api/books?ord=desc
+            url: "/api/stores",
 
             // data = array of objects
             success: (data, status, xhr) => {
@@ -97,7 +100,7 @@
             
             $.ajax({
                 type: "POST",
-                url: 'http://localhost:3000/api/add/books',
+                url: '/api/add/books',
                 data: JSON.stringify(bookObj),
                 contentType: "application/json",
                 success: (data, status, xhr) => {

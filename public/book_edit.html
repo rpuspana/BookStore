@@ -60,7 +60,10 @@
         // display all the stores in the Stores dropdown
         $.ajax({
             type: "GET",
-            url: "http://localhost:3000/api/stores",
+
+            // we run the API and the frontend in the same location, so replace http://localhost:3000/api/books?ord=desc 
+            // with /api/books?ord=desc
+            url: "/api/stores",
 
             // data = array of objects
             success: (data, status, xhr) => {
@@ -93,7 +96,7 @@
         // get the data of this book
         $.ajax({
             type: "GET",
-            url: `http://localhost:3000/api/books/${bookID}`,
+            url: `/api/books/${bookID}`,
             success: (data, status, xhr) => {
 
                 // fill in the form with the data of the returned book
@@ -111,6 +114,7 @@
 
         // catch the form's submit event
         $('#books_form').submit((event) => {
+
             // prevent the page from reloading
             event.preventDefault();
 
@@ -125,7 +129,8 @@
 
             $.ajax({
                 type: "PATCH",
-                url: `http://localhost:3000/api/add/books/${bookID}`,
+                url: `/api/add/books/${bookID}`,
+
                 data: JSON.stringify(bookObj),
                 contentType: "application/json",
                 success: (data, status, xhr) => {
@@ -146,7 +151,8 @@
 
             $.ajax({
                 type: "DELETE",
-                url: `http://localhost:3000/api/delete/books/${bookID}`,
+                url: `/api/delete/books/${bookID}`,
+
                 success: (data, status, xhr) => {
 
                     alert(`Book ${bookName} was deleted successfully`);

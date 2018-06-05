@@ -32,8 +32,11 @@
         $.ajax({
             type: "GET",
 
+            // because we run the API and the frontend in the same location,
+            // we can get replace http://localhost:3000/api/books?ord=desc 
+            // with /api/books?ord=desc
             // asc = oldest to newest, desc = newest to oldest
-            url: "http://localhost:3000/api/books?ord=desc",
+            url: "/api/books?ord=desc",
             success: (data, status, xhr) => {
                 let template = ``;
 
