@@ -21,8 +21,8 @@ const mongoose = require('mongoose');
 // use native Promisses
 mongoose.Promise = global.Promise;
 
-// create and connect to the database
-mongoose.connect('mongodb://localhost:27017/book_db');
+// create and connect to the database on a remote server, or on a localhost
+mongoose.connect(process.env.MONGODB_URI || 'mongodb://localhost:27017/book_db');
 
 // get the book model from books.js and 
 // use ES6 destructuring to assign to the var Books the value of the Book property(Book model)
