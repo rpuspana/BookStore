@@ -3,6 +3,10 @@
 Add books and stores to a MongoDB database, see a list of all the books in the database.
 Add a book to multiple stores.
 
+### Deployment
+
+Please check this link to see how the app works in a Heroku testing environment https://rpuspana-book-store.herokuapp.com/index.html
+
 ### Tech used
 
 - Node.js 8
