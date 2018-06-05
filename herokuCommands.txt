@@ -1,0 +1,44 @@
+project's root folder, use cmd
+
+# see that heroku is running from cmd
+$ heroku --help
+
+# loign to heroku from project's root folder, use cmd
+$ heroku login
+
+# project settings for the app to work with Heroku
+package.json
+
+"scripts": {
+    "start": "node server/server.js", // tell heroku what command to run to start the app
+	...
+  },
+  "engines": {
+    "node": "8.11.1" // what version of node we are using(node on your machine)
+  },
+  
+# create app in Heroku
+$ heroku create rpuspana-book-store
+  
+# add the files to the project
+$ git push heroku
+ 
+# install heroku add-on as instructed by the add-on page on the Heroku addon store https://elements.heroku.com/addons
+
+// mongolab = addon, :sandbox = addon plan
+$ heroku addons:create mongolab:sandbox
+
+# configure heroku after the add-on has been installed
+$ heroku config -> environment variable MONGODB_URI, value mongodb://heroku_21pwcr9x:5nm2mi9i7k3brj842gj30bub6l@ds247830.mlab.com:47830/heroku_21pwcr9x
+
+// create and connect to the database on a remote server, or on a localhost
+=> server.js - mongoose.connect(process.env.MONGODB_URI || 'mongodb://localhost:27017/book_db');
+
+# rebuild the app on heroku after you pushed new changes to github
+$ git push heroku master(branch to push to heroku)
+
+# after the command above finished, go to a link like https://git.heroku.com/rpuspana-book-store.git
+
+# check for errors when deploying the app, after the app is deployed
+$ heroku logs
+
