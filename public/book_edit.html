@@ -134,7 +134,6 @@
                 data: JSON.stringify(bookObj),
                 contentType: "application/json",
                 success: (data, status, xhr) => {
-                    console.log(data);
                     alert(`Book "${bookObj.name}" updated successfully`);
                 },
                 error: (xhr) => {
