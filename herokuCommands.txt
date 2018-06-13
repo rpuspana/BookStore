@@ -42,3 +42,8 @@ $ git push heroku master(branch to push to heroku)
 # check for errors when deploying the app, after the app is deployed
 $ heroku logs
 
+# set variables
+$ config:set SECRET=supersecretpassword
+
+# get value of variable in javascript - process.env.SECRET
+
